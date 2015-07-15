@@ -36,15 +36,15 @@ function Circle(x, y, wr, hst, color) {
 Circle.prototype = new Shape();
 
 Shape.prototype.drawRect = function() {
-  ctx.fillRect (this.x, this.y, this.wr, this.hst);
   ctx.fillStyle = this.color;
+  ctx.fillRect (this.x, this.y, this.wr, this.hst);
 };
 
 Shape.prototype.drawCircle = function() {
+  ctx.fillStyle = this.color;
   var path=new Path2D();
   path.arc(this.x, this.y, this.wr, this.hst, Math.PI*2, true);
   ctx.fill(path);
-  ctx.fillStyle = this.color;
 };
 
 Shape.prototype.collect = function(x, y, wr, hst, color) {
@@ -67,35 +67,58 @@ Shape.prototype.collect = function(x, y, wr, hst, color) {
   }
 };
 
-function create(x) {
+var randomColor = function() {
+  var r = Math.floor(Math.random()*255);
+  var g = Math.floor(Math.random()*255);
+  var b = Math.floor(Math.random()*255);
+  var a = Math.random();
+  return "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
+};
+
+function create(x, randomize) {
   var width = Math.floor(Math.random()*canvas.width);
   var height = Math.floor(Math.random()*canvas.height);
+  var color;
   var newItem;
+  if (!randomize) {
+    color = pickColor.value;
+  } else {
+    color = randomColor();
+  }
   if (x === "rectangle") {
-    newItem = new Rectangle(width, height, 100 * pickSize.value, 50 * pickSize.value, pickColor.value);
+    newItem = new Rectangle(width, height, 100 * pickSize.value, 50 * pickSize.value, color);
     newItem.drawRect();
   } else if (x === "circle") {
-    newItem = new Circle(width, height, 50 * pickSize.value, 0, pickColor.value);
+    newItem = new Circle(width, height, 50 * pickSize.value, 0, color);
     newItem.drawCircle();
   } else if (x === "square") {
-    newItem = new Square(width, height, 100 * pickSize.value, pickColor.value);
+    newItem = new Square(width, height, 100 * pickSize.value, color);
     newItem.drawRect();
   }
   newItem.collect();
 }
 
+var randColor = document.getElementById('randomColor');
+
+
 canvas.addEventListener('click', function(e) {
   var x = e.offsetX;
   var y = e.offsetY;
+  var color;
   var newItem;
+  if (!randColor.checked) {
+    color = pickColor.value;
+  } else {
+    color = randomColor();
+  }
   if (pickShape.value === "Circle") {
-    newItem = new Circle(x, y, 50 * pickSize.value, 0, pickColor.value);
+    newItem = new Circle(x, y, 50 * pickSize.value, 0, color);
     newItem.drawCircle();
     } else {
       if (pickShape.value === "Square") {
-      newItem = new Square(x, y, 100 * pickSize.value, pickColor.value);
+      newItem = new Square(x, y, 100 * pickSize.value, color);
       } else if (pickShape.value === "Rectangle") {
-      newItem = new Rectangle(x, y, 100 * pickSize.value, 50 * pickSize.value, pickColor.value);
+      newItem = new Rectangle(x, y, 100 * pickSize.value, 50 * pickSize.value, color);
     }
     newItem.drawRect();
   }
@@ -120,16 +143,30 @@ function erase(array) {
   array = [];
 }
 
+fillbtn.onclick = function() {
+  for (var i = 0; i < 150; i++) {
+    var option = Math.floor(Math.random() * 3);
+    if (option === 0) {
+      create("square", true);
+    } else if (option === 1){
+      create("circle", true);
+    } else {
+      create("rectangle", true);
+    }
+  }
+};
+
 rectbtn.onclick = function() {
-  create("rectangle");
+  create("rectangle", randColor.checked);
+  // console.log(randColor.checked);
 };
 
 squbtn.onclick = function() {
-  create("square");
+  create("square", randColor.checked);
 };
 
 cirbtn.onclick = function() {
-  create("circle");
+  create("circle", randColor.checked);
 };
 
 eraseRects.onclick = function() {
