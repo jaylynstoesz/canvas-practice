@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Canvas Demo</title>
+    <link rel="stylesheet" href="/app.css">
+  </head>
+  <body>
+    <h1>Hello!</h1>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <div>
+      <label for="pickShape">Click the canvas to create a shape!</label>
+      <select class="shape" name="pickShape" id="pickShape">
+        <option value="Circle">Circle</option>
+        <option value="Square">Square</option>
+        <option value="Rectangle">Rectangle</option>
+      </select>
+    </div>
+    <div>
+      <input type="color" name="pickColor" id="pickColor" value="#00F5FF">
+      <select class="select" name="pickSize" id="pickSize">
+        <option value="0.1">Itsy-Bitsy</option>
+        <option value="0.5">Tiny</option>
+        <option value="0.75">Small</option>
+        <option value="1" selected>Medium</option>
+        <option value="1.5">Big</option>
+        <option value="2">Super Big</option>
+        <option value="3">Ginormous</option>
+      </select>
+    </div>
+    <div>
+      <button type="button" name="eraseAll" id="eraseAll">Erase all the things!</button>
+    </div>
+    <div>
+      <p>Or randomize it...</p>
+      <button type="button" name="rectbtn" id="rectbtn">Random Rectangle</button>
+      <button type="button" name="squbtn" id="squbtn">Random Square</button>
+      <button type="button" name="cirbtn" id="cirbtn">Random Circle</button>
+    </div>
+    <script type="text/javascript" src="/app.js"></script>
+  </body>
+</html>
